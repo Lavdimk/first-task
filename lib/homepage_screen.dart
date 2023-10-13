@@ -1,9 +1,41 @@
 import 'package:first_task/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'memeservice.dart';
 
-class HomepageScreen extends StatelessWidget {
-  const HomepageScreen({super.key});
+class HomepageScreen extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
+  const HomepageScreen({Key? key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _HomepageScreenState createState() => _HomepageScreenState();
+}
+
+class _HomepageScreenState extends State<HomepageScreen> {
+  final MemeService memeService = MemeService();
+  List<Map<String, String>> memes = [];
+  int currentMemeIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMemes();
+  }
+
+  Future<void> fetchMemes() async {
+    try {
+      final memeData = await memeService.fetchMemes();
+      setState(() {
+        memes = memeData;
+      });
+//       for (var meme in memes) {
+//   print(' Name: ${meme['name']}');
+// }
+    } catch (e) {
+      print('Error fetching memes: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +77,35 @@ class HomepageScreen extends StatelessWidget {
             ? themeManager.darkTheme.backgroundColor
             : themeManager.lightTheme.backgroundColor,
         body: Center(
-          child: Text(
-            'Welcome to my super duper app',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: themeManager.isDarkMode
-                  ? themeManager.darkTheme.primaryColor
-                  : themeManager.lightTheme.primaryColor,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (memes.isNotEmpty)
+                Image.network(
+                  memes[currentMemeIndex]['url']!,
+                  width: 400.0,
+                  height: 400.0,
+                ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    themeManager.isDarkMode
+                        ? themeManager.darkTheme.buttonColor
+                        : themeManager.lightTheme.buttonColor,
+                  ),
+                  minimumSize: MaterialStateProperty.all(const Size(350, 50)),
+                ),
+                onPressed: () {
+                  if (memes.isNotEmpty) {
+                    currentMemeIndex = (currentMemeIndex + 1) % memes.length;
+                    setState(() {});
+                  }
+                },
+                child: const Text(
+                  'Next Meme',
+                ),
+              ),
+            ],
           ),
         ),
       ),
