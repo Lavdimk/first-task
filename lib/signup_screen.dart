@@ -1,8 +1,8 @@
 import 'theme_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'homepage_screen.dart';
+import 'custom_text_field.dart';
 
 class SignupData {
   TextEditingController emailController = TextEditingController();
@@ -141,19 +141,10 @@ class SignupScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: TextFormField(
-                    controller: signupData.emailController,
-                    decoration: const InputDecoration(
-                      hintText: 'johndoe@gmail.com',
-                      contentPadding: EdgeInsets.only(left: 10),
-                      border: InputBorder.none,
-                    ),
-                  ),
+                child: CustomTextField(
+                  labelText: 'johndoe@gmail.com',
+                  controller: signupData.emailController,
+                  keyboardType: TextInputType.emailAddress,
                 ),
               ),
               const SizedBox(
@@ -177,22 +168,12 @@ class SignupScreen extends StatelessWidget {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: TextFormField(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: CustomTextField(
+                    labelText: "John Smith",
                     controller: signupData.fullNameController,
-                    decoration: const InputDecoration(
-                      hintText: 'John Smith',
-                      contentPadding: EdgeInsets.only(left: 10),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
+                    keyboardType: TextInputType.name,
+                  )),
               const SizedBox(
                 height: 25,
               ),
@@ -214,25 +195,13 @@ class SignupScreen extends StatelessWidget {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: TextFormField(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: CustomTextField(
+                    labelText: "e.g. 058838916784",
                     controller: signupData.phoneNumberController,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                      hintText: 'e.g. 058838916784',
-                      contentPadding: EdgeInsets.only(left: 10),
-                      border: InputBorder.none,
-                    ),
+                  )
                   ),
-                ),
-              ),
               const SizedBox(
                 height: 25,
               ),
@@ -254,23 +223,12 @@ class SignupScreen extends StatelessWidget {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: TextFormField(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: CustomTextField(
+                    labelText: "************",
                     controller: signupData.passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: '**********',
-                      contentPadding: EdgeInsets.only(left: 10),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
+                    keyboardType: TextInputType.visiblePassword,
+                  )),
               const SizedBox(
                 height: 30,
               ),
@@ -295,7 +253,7 @@ class SignupScreen extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('Close'),
+                                  child: const Text('Close'),
                                 ),
                               ],
                             );
